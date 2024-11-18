@@ -22,16 +22,50 @@ class _PlotsPageState extends State<PlotsPage> {
 
   Future<void> fetchPlots() async {
     final url = Uri.parse('https://agripureapi.onrender.com/plot');
-    final response = await http.get(url);
+    try {
+      final response = await http.get(url);
 
-    if (response.statusCode == 200) {
+      if (response.statusCode == 200) {
+        setState(() {
+          plots = json.decode(response.body) ?? []; // Maneja respuestas nulas
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to fetch plots: ${response.body}')),
+        );
+      }
+    } catch (e) {
       setState(() {
-        plots = json.decode(response.body);
         isLoading = false;
       });
-    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to fetch plots: ${response.body}')),
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
+  }
+
+  Future<void> deletePlot(int id) async {
+    final url = Uri.parse('https://agripureapi.onrender.com/plot/$id');
+    try {
+      final response = await http.delete(url);
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Plot deleted successfully!')),
+        );
+        fetchPlots(); // Actualiza la lista después de eliminar
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to delete plot: ${response.body}')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
       );
     }
   }
@@ -41,8 +75,8 @@ class _PlotsPageState extends State<PlotsPage> {
     return Scaffold(
       backgroundColor: Colors.black87,
       appBar: AppBar(
-        title: const Text('My Plots'),
-        backgroundColor: Colors.black87,
+        title: const Text('Mis parcelas'),
+        backgroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -61,7 +95,7 @@ class _PlotsPageState extends State<PlotsPage> {
                 minimumSize: const Size(double.infinity, 50),
               ),
               child: const Text(
-                '+ Add plot',
+                '+ Agregar parcela',
                 style: TextStyle(color: Colors.white),
               ),
             ),
@@ -87,17 +121,18 @@ class _PlotsPageState extends State<PlotsPage> {
                     margin: const EdgeInsets.symmetric(vertical: 10),
                     child: ListTile(
                       title: Text(
-                        plot['name'],
+                        plot['plantName'] ?? 'Unknown', // Uso de plantName
                         style: const TextStyle(color: Colors.white),
                       ),
                       subtitle: Text(
-                        'Size: ${plot['size']} m²\nQuantity: ${plot['quantity']}',
+                        'Size: ${plot['size'] ?? 'N/A'} m²\nQuantity: ${plot['quantity'] ?? 'N/A'}',
                         style: const TextStyle(color: Colors.white70),
                       ),
                       trailing: IconButton(
                         icon: const Icon(Icons.delete, color: Colors.red),
                         onPressed: () {
-                          deletePlot(plot['id']);
+                          // Convierte el ID a entero antes de pasarlo
+                          deletePlot(plot['id'] ?? 0);
                         },
                       ),
                     ),
@@ -109,21 +144,5 @@ class _PlotsPageState extends State<PlotsPage> {
         ),
       ),
     );
-  }
-
-  Future<void> deletePlot(String id) async {
-    final url = Uri.parse('https://agripureapi.onrender.com/plot/$id');
-    final response = await http.delete(url);
-
-    if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Plot deleted successfully!')),
-      );
-      fetchPlots(); // Actualiza la lista después de eliminar
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to delete plot: ${response.body}')),
-      );
-    }
   }
 }

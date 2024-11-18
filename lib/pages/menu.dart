@@ -7,7 +7,7 @@ class MainMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AgriPuro'),
+        title: const Text('AgriPure'),
         backgroundColor: Colors.black87,
       ),
       drawer: Drawer(
@@ -98,7 +98,7 @@ class MainMenu extends StatelessWidget {
         color: Colors.grey[900],
         child: const Center(
           child: Text(
-            'Bienvenido a AgriPuro',
+            'Bienvenido a AgriPure',
             style: TextStyle(
               fontSize: 18,
               color: Colors.white,
