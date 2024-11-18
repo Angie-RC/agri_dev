@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -19,26 +18,32 @@ class _AddPlotPageState extends State<AddPlotPage> {
 
   Future<void> _addPlot() async {
     final url = Uri.parse('https://agripureapi.onrender.com/plot');
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode({
-        "name": _nameController.text,
-        "size": int.parse(_sizeController.text),
-        "quantity": int.parse(_quantityController.text),
-        "latitude": double.parse(_latitudeController.text),
-        "longitude": double.parse(_longitudeController.text),
-      }),
-    );
-
-    if (response.statusCode == 201) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Plot added successfully!')),
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          "plantName": _nameController.text, // Corregido a "plantName"
+          "size": int.parse(_sizeController.text),
+          "quantity": int.parse(_quantityController.text),
+          "latitude": double.parse(_latitudeController.text),
+          "longitude": double.parse(_longitudeController.text),
+        }),
       );
-      Navigator.pop(context); // Regresa a la página de parcelas
-    } else {
+
+      if (response.statusCode == 201) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Plot added successfully!')),
+        );
+        Navigator.pop(context); // Regresa a la página de parcelas
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to add plot: ${response.body}')),
+        );
+      }
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to add plot: ${response.body}')),
+        SnackBar(content: Text('Error: $e')),
       );
     }
   }
@@ -48,7 +53,7 @@ class _AddPlotPageState extends State<AddPlotPage> {
     return Scaffold(
       backgroundColor: Colors.black87,
       appBar: AppBar(
-        title: const Text('Agregar parcela'),
+        title: const Text('Agregar Parcela'),
         backgroundColor: Colors.white,
       ),
       body: Padding(

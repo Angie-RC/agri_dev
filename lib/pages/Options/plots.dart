@@ -48,9 +48,7 @@ class _PlotsPageState extends State<PlotsPage> {
     }
   }
 
-  Future<void> deletePlot(String id) async {
-    if (id.isEmpty) return;
-
+  Future<void> deletePlot(int id) async {
     final url = Uri.parse('https://agripureapi.onrender.com/plot/$id');
     try {
       final response = await http.delete(url);
@@ -77,8 +75,8 @@ class _PlotsPageState extends State<PlotsPage> {
     return Scaffold(
       backgroundColor: Colors.black87,
       appBar: AppBar(
-        title: const Text('My Plots'),
-        backgroundColor: Colors.black87,
+        title: const Text('Mis parcelas'),
+        backgroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -97,7 +95,7 @@ class _PlotsPageState extends State<PlotsPage> {
                 minimumSize: const Size(double.infinity, 50),
               ),
               child: const Text(
-                '+ Add plot',
+                '+ Agregar parcela',
                 style: TextStyle(color: Colors.white),
               ),
             ),
@@ -133,7 +131,8 @@ class _PlotsPageState extends State<PlotsPage> {
                       trailing: IconButton(
                         icon: const Icon(Icons.delete, color: Colors.red),
                         onPressed: () {
-                          deletePlot(plot['id'] ?? ''); // Envía correctamente el ID
+                          // Convierte el ID a entero antes de pasarlo
+                          deletePlot(plot['id'] ?? 0);
                         },
                       ),
                     ),
