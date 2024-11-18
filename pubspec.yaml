@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  http: ^1.2.2
+  provider: ^6.0.0 # Para gestión de estado
 
 dev_dependencies:
   flutter_test:
