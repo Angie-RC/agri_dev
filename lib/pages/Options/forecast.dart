@@ -8,8 +8,8 @@ class ForecastPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black87,
       appBar: AppBar(
-        title: const Text('Forecast'),
-        backgroundColor: Colors.black87,
+        title: const Text('Sensores'),
+        backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -48,8 +48,11 @@ class ForecastPage extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // Cambiar Row por Wrap para manejar el espacio limitado
+                    Wrap(
+                      alignment: WrapAlignment.start,
+                      spacing: 16.0,
+                      runSpacing: 8.0,
                       children: const [
                         _ForecastDetail(label: 'Sensation', value: '0°C'),
                         _ForecastDetail(label: 'Pressure', value: '1015 hPa'),
@@ -189,12 +192,16 @@ class _ForecastDetail extends StatelessWidget {
             label,
             style: const TextStyle(color: Colors.white70, fontSize: 16),
           ),
-          Text(
-            value,
-            style: const TextStyle(color: Colors.white, fontSize: 16),
+          Flexible(
+            child: Text(
+              value,
+              style: const TextStyle(color: Colors.white, fontSize: 16),
+              overflow: TextOverflow.ellipsis, // Previene desbordamiento
+            ),
           ),
         ],
       ),
     );
   }
 }
+
