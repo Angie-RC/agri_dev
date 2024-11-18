@@ -65,7 +65,7 @@ class MainMenu extends StatelessWidget {
                 ),
                 ListTile(
                   leading: const Icon(Icons.cloud, color: Colors.white),
-                  title: const Text('Pronóstico', style: TextStyle(color: Colors.white)),
+                  title: const Text('Sensores', style: TextStyle(color: Colors.white)),
                   onTap: () {
                     Navigator.pushNamed(context, '/forecast');
                   },

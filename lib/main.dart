@@ -22,7 +22,7 @@ class MainApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // Ruta para el Login
-        '/': (context) => PlotsPage(),
+        '/': (context) => ForecastPage(),
         // Ruta para el Registro
         '/register': (context) => RegisterPage(),
         '/plants': (context) => const PlantsPage(),
