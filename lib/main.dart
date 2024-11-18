@@ -1,4 +1,11 @@
+import 'package:AgriPure/pages/Options/forecast.dart';
+import 'package:AgriPure/pages/Options/plants.dart';
+import 'package:AgriPure/pages/Options/plots.dart';
+import 'package:AgriPure/pages/menu.dart';
 import 'package:flutter/material.dart';
+import 'pages/login.dart';
+import 'pages/register.dart';
+import 'pages/Options/calendar.dart';
 
 void main() {
   runApp(const MainApp());
@@ -9,13 +16,20 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+      // Página inicial
+      initialRoute: '/',
+      routes: {
+        // Ruta para el Login
+        '/': (context) => ForecastPage(),
+        // Ruta para el Registro
+        '/register': (context) => RegisterPage(),
+        '/plants': (context) => const PlantsPage(),
+        '/calendar': (context) => const CalendarPage(),
+        '/plots': (context) => const PlotsPage(),
+        '/forecast': (context) => const ForecastPage(),
+      },
     );
   }
 }
