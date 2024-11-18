@@ -48,8 +48,8 @@ class _AddPlotPageState extends State<AddPlotPage> {
     return Scaffold(
       backgroundColor: Colors.black87,
       appBar: AppBar(
-        title: const Text('Add Plot'),
-        backgroundColor: Colors.black87,
+        title: const Text('Agregar parcela'),
+        backgroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
