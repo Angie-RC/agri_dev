@@ -48,6 +48,30 @@ class _PlotsPageState extends State<PlotsPage> {
     }
   }
 
+  Future<void> deletePlot(String id) async {
+    if (id.isEmpty) return;
+
+    final url = Uri.parse('https://agripureapi.onrender.com/plot/$id');
+    try {
+      final response = await http.delete(url);
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Plot deleted successfully!')),
+        );
+        fetchPlots(); // Actualiza la lista después de eliminar
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to delete plot: ${response.body}')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,7 +123,7 @@ class _PlotsPageState extends State<PlotsPage> {
                     margin: const EdgeInsets.symmetric(vertical: 10),
                     child: ListTile(
                       title: Text(
-                        plot['planName'] ?? 'Unknown', // Uso de planName
+                        plot['plantName'] ?? 'Unknown', // Uso de plantName
                         style: const TextStyle(color: Colors.white),
                       ),
                       subtitle: Text(
@@ -109,7 +133,7 @@ class _PlotsPageState extends State<PlotsPage> {
                       trailing: IconButton(
                         icon: const Icon(Icons.delete, color: Colors.red),
                         onPressed: () {
-                          deletePlot(plot['id'] ?? ''); // Maneja valores null
+                          deletePlot(plot['id'] ?? ''); // Envía correctamente el ID
                         },
                       ),
                     ),
@@ -121,29 +145,5 @@ class _PlotsPageState extends State<PlotsPage> {
         ),
       ),
     );
-  }
-
-  Future<void> deletePlot(String id) async {
-    if (id.isEmpty) return;
-
-    final url = Uri.parse('https://agripureapi.onrender.com/plot/$id');
-    try {
-      final response = await http.delete(url);
-
-      if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Plot deleted successfully!')),
-        );
-        fetchPlots(); // Actualiza la lista después de eliminar
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to delete plot: ${response.body}')),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
-    }
   }
 }
