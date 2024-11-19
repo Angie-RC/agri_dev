@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'pages/login.dart';
 import 'pages/register.dart';
 import 'pages/Options/calendar.dart';
+import 'pages/Options/plant_details.dart';
 
 void main() {
   runApp(const MainApp());
@@ -22,10 +23,10 @@ class MainApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // Ruta para el Login
-        '/': (context) => ForecastPage(),
+        '/': (context) => PlantsScreen(),
         // Ruta para el Registro
         '/register': (context) => RegisterPage(),
-        '/plants': (context) => const PlantsPage(),
+        '/plants': (context) => PlantsScreen(),
         '/calendar': (context) => const CalendarPage(),
         '/plots': (context) => const PlotsPage(),
         '/forecast': (context) => const ForecastPage(),
